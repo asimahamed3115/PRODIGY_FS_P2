@@ -1,0 +1,42 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f4f4f4;
+}
+header {
+  background: #333;
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+.btn {
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+}
+main {
+  padding: 20px;
+}
+form, table {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+button {
+  margin: 2px;
+  padding: 5px 10px;
+}
+.danger {
+  background: red;
+  color: white;
+}

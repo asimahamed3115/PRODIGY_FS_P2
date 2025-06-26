@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add/Edit Employee</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Add / Edit Employee</h1>
+    <a href="index.html" class="btn">← Back</a>
+  </header>
+  <main>
+    <form id="employeeForm">
+      <label>Name</label>
+      <input type="text" name="name" required />
+      <label>Email</label>
+      <input type="email" name="email" required />
+      <label>Role</label>
+      <input type="text" name="role" required />
+      <button type="submit">Submit</button>
+    </form>
+  </main>
+  <script>
+    const form = document.getElementById('employeeForm');
+    const urlParams = new URLSearchParams(window.location.search);
+    const employeeId = urlParams.get('id');
+
+    if (employeeId) {
+      fetch('/api/employees')
+        .then(res => res.json())
+        .then(data => {
+          const emp = data.find(e => e.id == employeeId);
+          if (emp) {
+            form.name.value = emp.name;
+            form.email.value = emp.email;
+            form.role.value = emp.role;
+          }
+        });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const employee = {
+        name: form.name.value,
+        email: form.email.value,
+        role: form.role.value
+      };
+      const method = employeeId ? 'PUT' : 'POST';
+      const endpoint = employeeId ? '/api/employees/' + employeeId : '/api/employees';
+      const res = await fetch(endpoint, {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(employee)
+      });
+      if (res.ok) {
+        alert(employeeId ? 'Employee updated!' : 'Employee added!');
+        window.location.href = 'index.html';
+      } else {
+        alert('Something went wrong!');
+      }
+    });
+  </script>
+</body>
+</html>

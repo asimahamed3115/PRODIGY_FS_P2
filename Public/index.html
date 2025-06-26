@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Employee List</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Employee List</h1>
+    <a href="add-employee.html" class="btn">Add Employee</a>
+  </header>
+  <main>
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="employeeBody"></tbody>
+    </table>
+  </main>
+  <script>
+    function loadEmployees() {
+      fetch('/api/employees')
+        .then(res => res.json())
+        .then(data => {
+          const table = document.getElementById('employeeBody');
+          table.innerHTML = '';
+          data.forEach(emp => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${emp.id}</td>
+              <td>${emp.name}</td>
+              <td>${emp.email}</td>
+              <td>${emp.role}</td>
+              <td>
+                <button onclick="editEmployee(${emp.id})">Edit</button>
+                <button onclick="deleteEmployee(${emp.id})" class="danger">Delete</button>
+              </td>
+            `;
+            table.appendChild(row);
+          });
+        });
+    }
+
+    function deleteEmployee(id) {
+      fetch('/api/employees/' + id, { method: 'DELETE' })
+        .then(res => res.json())
+        .then(() => {
+          alert('Deleted!');
+          loadEmployees();
+        });
+    }
+
+    function editEmployee(id) {
+      window.location.href = 'add-employee.html?id=' + id;
+    }
+
+    loadEmployees();
+  </script>
+</body>
+</html>
